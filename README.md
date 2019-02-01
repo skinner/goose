@@ -53,14 +53,14 @@ Commands:
     down                 Roll back the version by 1
     down-to VERSION      Roll back to a specific VERSION
     redo                 Re-run the latest migration
-    status               Dump the migration status for the current DB. Use [-missing-only] option to show only migrations that were missed
+    status               Dump the migration status for the current DB. Use [-show-missing-only] option to show only migrations that were missed
     version              Print the current version of the database
     create NAME [sql|go] Creates new migration file with the current timestamp
 
 Options:
     -dir string
         directory with migration files (default ".")
-    -missing-only
+    -show-missing-only
         for status command - find out only migrations, missing from the current DB
     -include-missing
         for up or up-to command - include migrations that were missed

@@ -12,7 +12,7 @@ import (
 var (
 	flags          = flag.NewFlagSet("goose", flag.ExitOnError)
 	dir            = flags.String("dir", ".", "directory with migration files")
-	missingOnly    = flags.Bool("missing-only", false, "for status command - show only migrations that were missed")
+	missingOnly    = flags.Bool("show-missing-only", false, "for status command - show only migrations that were missed")
 	includeMissing = flags.Bool("include-missing", false, "for up or up-to command - include migrations that were missed")
 )
 
@@ -108,7 +108,7 @@ Examples:
 Options:
     -dir string
         directory with migration files (default ".")
-    -missing-only
+    -show-missing-only
         for status command - show only migrations that were missed
     -include-missing
         for up or up-to command - include migrations that were missed
@@ -123,7 +123,7 @@ Commands:
     down-to VERSION      Roll back to a specific VERSION
     redo                 Re-run the latest migration
     reset                Roll back all migrations
-    status               Dump the migration status for the current DB. Use [-missing-only] option to show only migrations that were missed
+    status               Dump the migration status for the current DB. Use [-show-missing-only] option to show only migrations that were missed
     version              Print the current version of the database
     create NAME [sql|go] Creates new migration file with the current timestamp
     fix                  Apply sequential ordering to migrations
