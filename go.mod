@@ -1,4 +1,4 @@
-module github.com/elijahcarrel/goose
+module github.com/grailbio/goose
 
 require (
 	github.com/go-sql-driver/mysql v1.4.1
