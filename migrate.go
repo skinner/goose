@@ -314,23 +314,23 @@ func GetDBVersion(db *sql.DB) (int64, error) {
 	return version, nil
 }
 
-// Returns all missing migrations
-func MissingMigrations(db *sql.DB, dir string) (missingMigrations Migrations, err error) {
+// CollectUnappliedMigrations returns all unapplied migrations.
+func CollectUnappliedMigrations(db *sql.DB, dir string) (unappliedMigrations Migrations, err error) {
 	migrations, err := CollectMigrations(dir, minVersion, maxVersion)
 	if err != nil {
-		return missingMigrations, err
+		return unappliedMigrations, err
 	}
 	statuses, err := dbMigrationsStatus(db)
 	if err != nil {
-		return missingMigrations, err
+		return unappliedMigrations, err
 	}
 	sort.Sort(migrations)
 
 	for _, migration := range migrations {
 		if !statuses[migration.Version] {
-			missingMigrations = append(missingMigrations, migration)
+			unappliedMigrations = append(unappliedMigrations, migration)
 		}
 	}
 
-	return missingMigrations, nil
+	return unappliedMigrations, nil
 }

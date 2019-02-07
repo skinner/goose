@@ -12,8 +12,9 @@ import (
 var (
 	flags          = flag.NewFlagSet("goose", flag.ExitOnError)
 	dir            = flags.String("dir", ".", "directory with migration files")
-	missingOnly    = flags.Bool("show-missing-only", false, "for status command - show only migrations that were missed")
+	unappliedOnly    = flags.Bool("show-unapplied-only", false, "for status command - show only migrations that were not applied")
 	includeMissing = flags.Bool("include-missing", false, "for up or up-to command - include migrations that were missed")
+	dryRun         = flags.Bool("dry-run", false, "for up, up-to, or up-by-one command - prints out the migrations it would apply and exits before applying them")
 )
 
 func main() {
@@ -28,12 +29,12 @@ func main() {
 
 	switch args[0] {
 	case "create":
-		if err := goose.Run("create", nil, *dir, *missingOnly, *includeMissing, args[1:]...); err != nil {
+		if err := goose.Run("create", nil, *dir, *unappliedOnly, *includeMissing, *dryRun, args[1:]...); err != nil {
 			log.Fatalf("goose run: %v", err)
 		}
 		return
 	case "fix":
-		if err := goose.Run("fix", nil, *dir, *missingOnly, *includeMissing); err != nil {
+		if err := goose.Run("fix", nil, *dir, *unappliedOnly, *includeMissing, *dryRun); err != nil {
 			log.Fatalf("goose run: %v", err)
 		}
 		return
@@ -73,7 +74,7 @@ func main() {
 		arguments = append(arguments, args[3:]...)
 	}
 
-	if err := goose.Run(command, db, *dir, *missingOnly, *includeMissing, arguments...); err != nil {
+	if err := goose.Run(command, db, *dir, *unappliedOnly, *includeMissing, *dryRun, arguments...); err != nil {
 		log.Fatalf("goose run: %v", err)
 	}
 }
@@ -108,22 +109,24 @@ Examples:
 Options:
     -dir string
         directory with migration files (default ".")
-    -show-missing-only
-        for status command - show only migrations that were missed
+    -show-unapplied-only
+        for status command - show only migrations that were not applied
     -include-missing
         for up or up-to command - include migrations that were missed
+    -dry-run
+		for up, up-to, or up-by-one command - prints out the migrations it would apply and exits before applying them
 `
 
 	usageCommands = `
 Commands:
-    up                   Migrate the DB to the most recent version available. Use [-include-missing] to include migrations that were missed
+    up                   Migrate the DB to the most recent version available. Use [-include-missing] to include migrations that were missed and [-dry-run] to see which migrations the command would apply without actually applying them
     up-by-one            Migrate up by a single version
-    up-to VERSION        Migrate the DB to a specific VERSION. Use [-include-missing] to include migrations that were missed
+    up-to VERSION        Migrate the DB to a specific VERSION. Use [-include-missing] to include migrations that were missed and [-dry-run] to see which migrations the command would apply without actually applying them
     down                 Roll back the version by 1
     down-to VERSION      Roll back to a specific VERSION
     redo                 Re-run the latest migration
     reset                Roll back all migrations
-    status               Dump the migration status for the current DB. Use [-show-missing-only] option to show only migrations that were missed
+    status               Dump the migration status for the current DB. Use [-show-unapplied-only] option to show only migrations that were not applied
     version              Print the current version of the database
     create NAME [sql|go] Creates new migration file with the current timestamp
     fix                  Apply sequential ordering to migrations

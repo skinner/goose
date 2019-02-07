@@ -10,7 +10,7 @@ Goose is a database migration tool. Manage your database schema by creating incr
 - Goose can now optionally include missing migrations when `goose up` or `goose up-to` is called using the new flag
   `-include-missing`
 - Goose can now optionally only show missing migrations when `goose status` is called using the new flag
-  `-show-missing-only`.
+  `-show-unapplied-only`.
 
 # Install
 
@@ -35,23 +35,25 @@ Drivers:
     redshift
 
 Commands:
-    up                   Migrate the DB to the most recent version available. Use [-include-missing] to include migrations that were missed
+    up                   Migrate the DB to the most recent version available. Use [-include-missing] to include migrations that were missed and [-dry-run] to see which migrations the command would apply without actually applying them
     up-by-one            Migrate up by a single version
-    up-to VERSION        Migrate the DB to a specific VERSION. Use [-include-missing] to include migrations that were missed
+    up-to VERSION        Migrate the DB to a specific VERSION. Use [-include-missing] to include migrations that were missed and [-dry-run] to see which migrations the command would apply without actually applying them
     down                 Roll back the version by 1
     down-to VERSION      Roll back to a specific VERSION
     redo                 Re-run the latest migration
-    status               Dump the migration status for the current DB. Use [-show-missing-only] option to show only migrations that were missed
+    status               Dump the migration status for the current DB. Use [-show-unapplied-only] option to show only migrations that were not applied
     version              Print the current version of the database
     create NAME [sql|go] Creates new migration file with the current timestamp
 
 Options:
     -dir string
         directory with migration files (default ".")
-    -show-missing-only
-        for status command - find out only migrations, missing from the current DB
+    -show-unapplied-only
+        for status command - show only migrations that were not applied
     -include-missing
         for up or up-to command - include migrations that were missed
+    -dry-run
+		for up, up-to, or up-by-one command - prints out the migrations it would apply and exits before applying them
 
 Examples:
     goose sqlite3 ./foo.db status
