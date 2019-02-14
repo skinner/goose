@@ -3,7 +3,7 @@ package main
 import (
 	"database/sql"
 
-	"github.com/grailbio/goose"
+	"github.com/elijahcarrel/goose"
 )
 
 func init() {

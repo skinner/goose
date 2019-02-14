@@ -6,15 +6,26 @@ Goose is a database migration tool. Manage your database schema by creating incr
 
 ### Goals of this fork
 
-`github.com/grailbio/goose` is a fork of `github.com/pressly/goose` with the following changes:
-- Goose can now optionally include missing migrations when `goose up` or `goose up-to` is called using the new flag
-  `-include-missing`
-- Goose can now optionally only show missing migrations when `goose status` is called using the new flag
-  `-show-unapplied-only`.
+`github.com/elijahcarrel/goose` is a fork of `github.com/pressly/goose` with the following changes:
+- Adds an `-include-missing` flag to any `goose up`-related command (which
+  includes `up`, `up-to`, or `up-by-one`). This flag applies missing
+  migrations.
+- Adds a `-show-unapplied-only` flag to `goose status`, which shows
+  only migrations that have not been applied (either ones that have
+  been skipped or normal future migrations).
+- Adds a `-dry-run` flag to any `goose up`-related command that lists the
+  migrations that will be applied without applying them.
+- Adds a fatal error when any `goose up`-related command is
+  called but there are missing migrations.
+- Updates `goose status` to show the message `(SKIPPED)` next to
+  migrations that were missed.
+- Updates migration error messages to show the filename of the
+  migration where the error occurred.
+- Updates messages and errors to be more consistently formatted.
 
 # Install
 
-    $ go get -u github.com/grailbio/goose/cmd/goose
+    $ go get -u github.com/elijahcarrel/goose/cmd/goose
 
 This will install the `goose` binary to your `$GOPATH/bin` directory.
 
@@ -203,7 +214,7 @@ language plpgsql;
 ## Go Migrations
 
 1. Create your own goose binary, see [example](./examples/go-migrations)
-2. Import `github.com/grailbio/goose`
+2. Import `github.com/elijahcarrel/goose`
 3. Register your migration functions
 4. Run goose command, ie. `goose.Up(db *sql.DB, dir string)`
 
@@ -215,7 +226,7 @@ package migrations
 import (
 	"database/sql"
 
-	"github.com/grailbio/goose"
+	"github.com/elijahcarrel/goose"
 )
 
 func init() {
@@ -240,7 +251,7 @@ func Down(tx *sql.Tx) error {
 ```
 
 # Hybrid Versioning
-Please, read the [versioning problem](https://github.com/grailbio/goose/issues/63#issuecomment-428681694) first.
+Please, read the [versioning problem](https://github.com/elijahcarrel/goose/issues/63#issuecomment-428681694) first.
 
 We strongly recommend adopting a hybrid versioning approach, using both timestamps and sequential numbers. Migrations created during the development process are timestamped and sequential versions are ran on production. We believe this method will prevent the problem of conflicting versions when writing software in a team environment.
 
@@ -250,7 +261,7 @@ To help you adopt this approach, `create` will use the current timestamp as the 
 
 Licensed under [MIT License](./LICENSE)
 
-[GoDoc]: https://godoc.org/github.com/grailbio/goose
-[GoDoc Widget]: https://godoc.org/github.com/grailbio/goose?status.svg
-[Travis]: https://travis-ci.org/grailbio/goose
-[Travis Widget]: https://travis-ci.org/grailbio/goose.svg?branch=master
+[GoDoc]: https://godoc.org/github.com/elijahcarrel/goose
+[GoDoc Widget]: https://godoc.org/github.com/elijahcarrel/goose?status.svg
+[Travis]: https://travis-ci.org/elijahcarrel/goose
+[Travis Widget]: https://travis-ci.org/elijahcarrel/goose.svg?branch=master

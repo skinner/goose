@@ -36,6 +36,6 @@ $
     ```go
     import (
         // Invoke init() functions within migrations pkg.
-        _ "github.com/grailbio/goose/example/migrations-go"
+        _ "github.com/elijahcarrel/goose/example/migrations-go"
     )
     ```

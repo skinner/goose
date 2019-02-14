@@ -6,7 +6,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/grailbio/goose"
+	"github.com/elijahcarrel/goose"
 )
 
 var (
