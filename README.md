@@ -6,7 +6,7 @@ Goose is a database migration tool. Manage your database schema by creating incr
 
 ### Goals of this fork
 
-`github.com/elijahcarrel/goose` is a fork of `github.com/pressly/goose` with the following changes:
+`github.com/grailbio-external/goose` is a fork of `github.com/pressly/goose` with the following changes:
 - Adds an `-include-missing` flag to any `goose up`-related command (which
   includes `up`, `up-to`, or `up-by-one`). This flag applies missing
   migrations.
@@ -25,7 +25,7 @@ Goose is a database migration tool. Manage your database schema by creating incr
 
 # Install
 
-    $ go get -u github.com/elijahcarrel/goose/cmd/goose
+    $ go get -u github.com/grailbio-external/goose/cmd/goose
 
 This will install the `goose` binary to your `$GOPATH/bin` directory.
 
@@ -214,7 +214,7 @@ language plpgsql;
 ## Go Migrations
 
 1. Create your own goose binary, see [example](./examples/go-migrations)
-2. Import `github.com/elijahcarrel/goose`
+2. Import `github.com/grailbio-external/goose`
 3. Register your migration functions
 4. Run goose command, ie. `goose.Up(db *sql.DB, dir string)`
 
@@ -226,7 +226,7 @@ package migrations
 import (
 	"database/sql"
 
-	"github.com/elijahcarrel/goose"
+	"github.com/grailbio-external/goose"
 )
 
 func init() {
@@ -251,7 +251,7 @@ func Down(tx *sql.Tx) error {
 ```
 
 # Hybrid Versioning
-Please, read the [versioning problem](https://github.com/elijahcarrel/goose/issues/63#issuecomment-428681694) first.
+Please, read the [versioning problem](https://github.com/pressly/goose/issues/63#issuecomment-428681694) first.
 
 We strongly recommend adopting a hybrid versioning approach, using both timestamps and sequential numbers. Migrations created during the development process are timestamped and sequential versions are ran on production. We believe this method will prevent the problem of conflicting versions when writing software in a team environment.
 
@@ -261,7 +261,7 @@ To help you adopt this approach, `create` will use the current timestamp as the 
 
 Licensed under [MIT License](./LICENSE)
 
-[GoDoc]: https://godoc.org/github.com/elijahcarrel/goose
-[GoDoc Widget]: https://godoc.org/github.com/elijahcarrel/goose?status.svg
-[Travis]: https://travis-ci.org/elijahcarrel/goose
-[Travis Widget]: https://travis-ci.org/elijahcarrel/goose.svg?branch=master
+[GoDoc]: https://godoc.org/github.com/grailbio-external/goose
+[GoDoc Widget]: https://godoc.org/github.com/grailbio-external/goose?status.svg
+[Travis]: https://travis-ci.org/grailbio-external/goose
+[Travis Widget]: https://travis-ci.org/grailbio-external/goose.svg?branch=master
